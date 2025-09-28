@@ -28,7 +28,7 @@
         <div class="col-md-6 hero p-4">
           <div class="text-center w-100">
             <h1 class="fw-bold">Bienvenido</h1>
-            <p class="muted-small">Accede al panel. Demo: <code>admin</code> / <code>1234</code>.</p>
+            <p class="muted-small">Gestion de compraventa: <code></code> / <code>2025</code>.</p>
             <img src="assets/placeholder.png" alt="" style="max-width:220px; opacity:.95;">
           </div>
         </div>
@@ -68,38 +68,38 @@
   </div>
 
 <script>
-(function(){
-  const form = document.getElementById('loginForm');
+  (function(){
+    const form = document.getElementById('loginForm');
 
-  // Detectar base URL según entorno
-  const BASE_URL = window.location.hostname.includes('localhost') 
-      ? 'http://127.0.0.1:8000' 
-      : 'https://storeapp-production-9a82.up.railway.app';
+    // Detectar base URL según entorno
+    const BASE_URL = window.location.hostname.includes('localhost') 
+        ? 'http://127.0.0.1:8000' 
+        : 'https://storeapp-production-9a82.up.railway.app';
 
-  form.addEventListener('submit', async function(e){
-      e.preventDefault();
-      if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
+    form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
 
-      const user = document.getElementById('user').value.trim();
-      const passwd = document.getElementById('password').value;
+        const user = document.getElementById('user').value.trim();
+        const passwd = document.getElementById('password').value;
 
-      try {
-          const res = await fetch(`${BASE_URL}/login`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ user, password: passwd })
-          });
+        try {
+            const res = await fetch(`${BASE_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user, password: passwd })
+            });
 
-          if (!res.ok) throw new Error('Credenciales incorrectas');
-          const data = await res.json();
+            if (!res.ok) throw new Error('Credenciales incorrectas');
+            const data = await res.json();
 
-          // Login exitoso → redirigir
-          window.location.href = '/app.html';
-      } catch (err) {
-          alert(err.message);
-      }
-  });
-})();
+            // Login exitoso → redirigir
+            window.location.href = '/app.html';
+        } catch (err) {
+            alert(err.message);
+        }
+    });
+  })();
 </script>
 
 
