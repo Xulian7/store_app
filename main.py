@@ -24,7 +24,9 @@ class LoginData(BaseModel):
     password: str
 
 # URL de PostgreSQL en Railway
-DATABASE_URL = "postgresql://postgres:HlfvHoCcqVIrpUOHzoHkYTDVlsxfdUSu@nozomi.proxy.rlwy.net:24651/railway"
+#DATABASE_URL = "postgresql://postgres:HlfvHoCcqVIrpUOHzoHkYTDVlsxfdUSu@nozomi.proxy.rlwy.net:24651/railway"
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
 
 # Conexión a la DB
 async def get_connection():
