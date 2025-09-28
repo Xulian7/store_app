@@ -65,45 +65,86 @@
           <input id="searchNav" class="form-control form-control-sm" placeholder="Buscar vista..." />
         </div>
 
-        <!-- Parent 1 -->
-        <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="p1">
-            <span class="icon"><i class="bi bi-house-door-fill"></i></span>
-            <span class="text-label">Level 1</span>
-          </a>
-          <div class="sublist" data-parent="p1">
-            <a href="#" class="nav-link child-link" data-view="p1a"><span class="icon"><i class="bi bi-1-square"></i></span><span class="text-label">a - Vista 1A</span></a>
-            <a href="#" class="nav-link child-link" data-view="p1b"><span class="icon"><i class="bi bi-2-square"></i></span><span class="text-label">b - Vista 1B</span></a>
-            <a href="#" class="nav-link child-link" data-view="p1c"><span class="icon"><i class="bi bi-3-square"></i></span><span class="text-label">c - Vista 1C</span></a>
-          </div>
-        </div>
-
-        <!-- Parent 2 -->
-        <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="p2">
-            <span class="icon"><i class="bi bi-speedometer2"></i></span>
-            <span class="text-label">Level 2</span>
-          </a>
-          <div class="sublist" data-parent="p2">
-            <a href="#" class="nav-link child-link" data-view="p2a"><span class="icon"><i class="bi bi-grid-1x2-fill"></i></span><span class="text-label">a - Vista 2A</span></a>
-            <a href="#" class="nav-link child-link" data-view="p2b"><span class="icon"><i class="bi bi-grid-3x3-gap-fill"></i></span><span class="text-label">b - Vista 2B</span></a>
-            <a href="#" class="nav-link child-link" data-view="p2c"><span class="icon"><i class="bi bi-bar-chart-fill"></i></span><span class="text-label">c - Vista 2C</span></a>
-          </div>
-        </div>
-
-        <!-- Parent 3 -->
-        <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="p3">
-            <span class="icon"><i class="bi bi-box-seam"></i></span>
-            <span class="text-label">Level 3</span>
-          </a>
-          <div class="sublist" data-parent="p3">
-            <a href="#" class="nav-link child-link" data-view="p3a"><span class="icon"><i class="bi bi-card-list"></i></span><span class="text-label">a - Vista 3A</span></a>
-            <a href="#" class="nav-link child-link" data-view="p3b"><span class="icon"><i class="bi bi-card-checklist"></i></span><span class="text-label">b - Vista 3B</span></a>
-            <a href="#" class="nav-link child-link" data-view="p3c"><span class="icon"><i class="bi bi-people-fill"></i></span><span class="text-label">c - Vista 3C</span></a>
-          </div>
-        </div>
+        <!-- Parent: Clientes -->
+    <div class="nav-item">
+      <a class="nav-link parent-link" data-parent="clientes">
+        <span class="icon"><i class="bi bi-people-fill"></i></span>
+        <span class="text-label">Clientes</span>
+      </a>
+      <div class="sublist" data-parent="clientes">
+        <a href="#" class="nav-link child-link" data-view="clientes-gestion">
+          <span class="icon"><i class="bi bi-person-lines-fill"></i></span>
+          <span class="text-label">Gestión</span>
+        </a>
+        <a href="#" class="nav-link child-link" data-view="clientes-reportes">
+          <span class="icon"><i class="bi bi-file-earmark-text-fill"></i></span>
+          <span class="text-label">Reportes</span>
+        </a>
       </div>
+    </div>
+
+    <!-- Parent: Almacén -->
+    <div class="nav-item">
+      <a class="nav-link parent-link" data-parent="almacen">
+        <span class="icon"><i class="bi bi-box-seam"></i></span>
+        <span class="text-label">Almacén</span>
+      </a>
+      <div class="sublist" data-parent="almacen">
+        <a href="#" class="nav-link child-link" data-view="almacen-gestion">
+          <span class="icon"><i class="bi bi-journal-text"></i></span>
+          <span class="text-label">Gestión</span>
+        </a>
+        <a href="#" class="nav-link child-link" data-view="almacen-ventas">
+          <span class="icon"><i class="bi bi-cash-stack"></i></span>
+          <span class="text-label">Ventas</span>
+        </a>
+        <a href="#" class="nav-link child-link" data-view="almacen-reportes">
+          <span class="icon"><i class="bi bi-file-earmark-bar-graph-fill"></i></span>
+          <span class="text-label">Reportes</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Parent: Taller -->
+    <div class="nav-item">
+      <a class="nav-link parent-link" data-parent="taller">
+        <span class="icon"><i class="bi bi-tools"></i></span>
+        <span class="text-label">Taller</span>
+      </a>
+      <div class="sublist" data-parent="taller">
+        <a href="#" class="nav-link child-link" data-view="taller-servicios">
+          <span class="icon"><i class="bi bi-wrench"></i></span>
+          <span class="text-label">Servicios</span>
+        </a>
+        <a href="#" class="nav-link child-link" data-view="taller-reportes">
+          <span class="icon"><i class="bi bi-file-earmark-text-fill"></i></span>
+          <span class="text-label">Reportes</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Parent: Arrendamientos -->
+    <div class="nav-item">
+      <a class="nav-link parent-link" data-parent="arrendamientos">
+        <span class="icon"><i class="bi bi-building"></i></span>
+        <span class="text-label">Arrendamientos</span>
+      </a>
+      <div class="sublist" data-parent="arrendamientos">
+        <a href="#" class="nav-link child-link" data-view="arrendamientos-cobros">
+          <span class="icon"><i class="bi bi-receipt"></i></span>
+          <span class="text-label">Lista de cobros</span>
+        </a>
+        <a href="#" class="nav-link child-link" data-view="arrendamientos-contratos">
+          <span class="icon"><i class="bi bi-file-text-fill"></i></span>
+          <span class="text-label">Contratos</span>
+        </a>
+        <a href="#" class="nav-link child-link" data-view="arrendamientos-reportes">
+          <span class="icon"><i class="bi bi-file-earmark-bar-graph-fill"></i></span>
+          <span class="text-label">Reportes</span>
+        </a>
+      </div>
+    </div>
+
 
       <div class="collapse-btn-container">
         <button id="collapseSidebarBtn" class="btn btn-sm btn-outline-secondary" title="Colapsar sidebar"><i class="bi bi-arrow-left-right"></i></button>
