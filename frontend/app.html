@@ -56,7 +56,7 @@
         </div>
         <div class="brand-text">
           <div>Moto Shop</div>
-          <small class="text-muted">Panel demo</small>
+          <small class="text-muted"></small>
         </div>
       </div>
 
@@ -255,26 +255,40 @@
     });
   });
 
-  // views
-  const views = {
-    'p1a':{title:'Vista 1A', html:'<p>Contenido de la vista 1A</p>'},
-    'p1b':{title:'Vista 1B', html:'<p>Contenido de la vista 1B</p>'},
-    'p1c':{title:'Vista 1C', html:'<p>Contenido de la vista 1C</p>'},
-    'p2a':{title:'Vista 2A', html:'<p>Contenido de la vista 2A</p>'},
-    'p2b':{title:'Vista 2B', html:'<p>Contenido de la vista 2B</p>'},
-    'p2c':{title:'Vista 2C', html:'<p>Contenido de la vista 2C</p>'},
-    'p3a':{title:'Vista 3A', html:'<p>Contenido de la vista 3A</p>'},
-    'p3b':{title:'Vista 3B', html:'<p>Contenido de la vista 3B</p>'},
-    'p3c':{title:'Vista 3C', html:'<p>Contenido de la vista 3C</p>'},
-  };
 
-  function loadView(key){
-    const v = views[key];
-    if(!v) return;
-    viewTitle.textContent=v.title;
-    breadcrumb.innerHTML='<li class="breadcrumb-item active">'+v.title+'</li>';
-    mainArea.innerHTML='<div class="view-card"><h5>'+v.title+'</h5>'+v.html+'</div>';
+  // views externas
+  async function loadView(viewKey){
+    // viewKey vendrá de data-view, ej: "almacen-gestion"
+    // conviértelo en una ruta, ej: "views/almGestion.html"
+    let filePath = '';
+    switch(viewKey){
+      case 'almacen-gestion': filePath = 'views/almgestion.html'; break;
+      case 'almacen-ventas': filePath = 'views/almVentas.html'; break;
+      case 'almacen-reportes': filePath = 'views/almReportes.html'; break;
+      case 'clientes-gestion': filePath = 'views/clientesGestion.html'; break;
+      case 'clientes-reportes': filePath = 'views/clientesReportes.html'; break;
+      case 'taller-servicios': filePath = 'views/tallerServicios.html'; break;
+      case 'taller-reportes': filePath = 'views/tallerReportes.html'; break;
+      case 'arrendamientos-cobros': filePath = 'views/arrCobros.html'; break;
+      case 'arrendamientos-contratos': filePath = 'views/arrContratos.html'; break;
+      case 'arrendamientos-reportes': filePath = 'views/arrReportes.html'; break;
+      default: 
+        mainArea.innerHTML = `<div class="alert alert-warning">Vista no definida (${viewKey})</div>`;
+        return;
+    }
+
+    try {
+      const res = await fetch(filePath);
+      if(!res.ok) throw new Error("No se pudo cargar "+filePath);
+      const html = await res.text();
+      viewTitle.textContent = viewKey.replace('-', ' ').toUpperCase();
+      breadcrumb.innerHTML = '<li class="breadcrumb-item active">'+viewTitle.textContent+'</li>';
+      mainArea.innerHTML = html;
+    } catch (err){
+      mainArea.innerHTML = `<div class="alert alert-danger">${err.message}</div>`;
+    }
   }
+
 
   // logout
   logoutBtn.addEventListener('click', ()=>{

@@ -36,6 +36,9 @@ async def get_connection():
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 # Opcional: monta /assets para compatibilidad con rutas antiguas
 app.mount("/assets", StaticFiles(directory="frontend/assets"), name="assets")
+# Monta vistas HTML parciales
+app.mount("/views", StaticFiles(directory="frontend/views"), name="views")
+
 
 # Función genérica para servir HTML con UTF-8
 def serve_html(filename: str):
