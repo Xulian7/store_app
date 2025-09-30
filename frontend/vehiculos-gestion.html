@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestión de Vehículos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f8f9fa; --card:#fff; --muted:#6c757d; --accent:#0d6efd;
+      --sidebar-bg:#ffffff; --sidebar-width:260px;
+    }
+    body{ background:var(--bg); color:var(--muted); height:100vh; }
+    .app-shell{ display:flex; height:100vh; overflow:hidden; }
+    .sidebar{
+      width:var(--sidebar-width); min-width:var(--sidebar-width); background:var(--sidebar-bg);
+      border-right:1px solid rgba(0,0,0,.06);
+      display:flex; flex-direction:column;
+    }
+    .sidebar .brand{ padding:18px; font-weight:700; display:flex; gap:10px; align-items:center; }
+    .sidebar .nav-section{ flex:1; overflow:auto; padding:8px; }
+    .sidebar .nav-item{ border-radius:8px; margin:6px 4px; }
+    .sidebar .nav-link{ color:var(--muted); display:flex; align-items:center; gap:12px; padding:10px; text-decoration:none; cursor:pointer; border-radius:6px; }
+    .sidebar .nav-link .icon{ width:28px; text-align:center; font-size:1.2rem; }
+    .sidebar .nav-link.active{ background:linear-gradient(90deg, rgba(13,110,253,.12), transparent); color:var(--accent); font-weight:600; }
+    .sidebar .parent-link.active-parent{ background:rgba(13,110,253,.08); }
+    .sidebar .sublist{ padding-left:38px; display:block; }
+    .content{ flex:1; padding:18px; overflow:auto; }
+    .topbar{ height:56px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 12px; background:transparent; }
+    .card { border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.08); }
+    .table thead { background:#0d6efd; color:#fff; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <div class="brand-logo badge bg-primary text-white rounded-pill" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+          <i class="bi bi-car-front-fill"></i>
+        </div>
+        <div class="brand-text">Moto Shop</div>
+      </div>
+      <div class="nav-section">
+        <!-- Parent: Clientes -->
+        <div class="nav-item">
+          <a class="nav-link parent-link" data-parent="clientes">
+            <span class="icon"><i class="bi bi-people-fill"></i></span>
+            <span class="text-label">Clientes</span>
+          </a>
+          <div class="sublist" data-parent="clientes">
+            <a href="clientes-gestion.html" class="nav-link child-link">Gestión</a>
+            <a href="clientes-reportes.html" class="nav-link child-link">Reportes</a>
+          </div>
+        </div>
+        <!-- Parent: Vehículos -->
+        <div class="nav-item">
+          <a class="nav-link parent-link active-parent" data-parent="vehiculos">
+            <span class="icon"><i class="bi bi-car-front-fill"></i></span>
+            <span class="text-label">Vehículos</span>
+          </a>
+          <div class="sublist" data-parent="vehiculos">
+            <a href="vehiculos-gestion.html" class="nav-link child-link active">Gestión</a>
+            <a href="vehiculos-reportes.html" class="nav-link child-link">Reportes</a>
+          </div>
+        </div>
+        <!-- Parent: Almacén -->
+        <div class="nav-item">
+          <a class="nav-link parent-link" data-parent="almacen">
+            <span class="icon"><i class="bi bi-box-seam"></i></span>
+            <span class="text-label">Almacén</span>
+          </a>
+          <div class="sublist" data-parent="almacen">
+            <a href="almacen-gestion.html" class="nav-link child-link">Gestión</a>
+            <a href="almacen-ventas.html" class="nav-link child-link">Ventas</a>
+            <a href="almacen-reportes.html" class="nav-link child-link">Reportes</a>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="content">
+      <div class="topbar">
+        <h4>Gestión de Vehículos</h4>
+      </div>
+      <div class="container py-4">
+        <h2 class="mb-4"><i class="bi bi-car-front-fill"></i> Gestión de Vehículos</h2>
+
+        <div class="row g-4">
+          <!-- Crear/Modificar Vehículo -->
+          <div class="col-md-6">
+            <div class="card p-3">
+              <h5><i class="bi bi-plus-circle"></i> Crear / Modificar Vehículo</h5>
+              <form id="formVehiculo" class="needs-validation" novalidate>
+                <div class="mb-3"><label class="form-label">Placa</label><input type="text" class="form-control" id="placa" required></div>
+                <div class="mb-3"><label class="form-label">Marca</label><input type="text" class="form-control" id="marca" required></div>
+                <div class="mb-3"><label class="form-label">Modelo</label><input type="text" class="form-control" id="modelo" required></div>
+                <div class="mb-3"><label class="form-label">Serie</label><input type="text" class="form-control" id="serie"></div>
+                <div class="mb-3"><label class="form-label">Motor</label><input type="text" class="form-control" id="motor"></div>
+                <div class="mb-3"><label class="form-label">Chasis</label><input type="text" class="form-control" id="chasis"></div>
+                <div class="mb-3"><label class="form-label">Propietario</label><input type="text" class="form-control" id="propietario"></div>
+                <div class="mb-3"><label class="form-label">Fecha SOAT</label><input type="date" class="form-control" id="fecha_soat"></div>
+                <button class="btn btn-primary w-100" type="submit">Guardar</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Tabla Vehículos -->
+          <div class="col-md-6">
+            <div class="card p-3">
+              <h5><i class="bi bi-eye-fill"></i> Vehículos Registrados</h5>
+              <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th>Placa</th>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th>Serie</th>
+                      <th>Motor</th>
+                      <th>Chasis</th>
+                      <th>Propietario</th>
+                      <th>Fecha SOAT</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaVehiculos"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script>
+  // Highlight parent link
+  document.querySelectorAll('.parent-link').forEach(parent=>{
+    parent.addEventListener('click', e=>{
+      e.preventDefault();
+      document.querySelectorAll('.parent-link').forEach(pl=>pl.classList.remove('active-parent'));
+      parent.classList.add('active-parent');
+    });
+  });
+
+  // Form submit
+  const formVehiculo = document.getElementById('formVehiculo');
+  const tablaVehiculos = document.getElementById('tablaVehiculos');
+  formVehiculo.addEventListener('submit', e=>{
+    e.preventDefault();
+    if(!formVehiculo.checkValidity()){ formVehiculo.classList.add('was-validated'); return; }
+
+    const placa = document.getElementById('placa').value;
+    const marca = document.getElementById('marca').value;
+    const modelo = document.getElementById('modelo').value;
+    const serie = document.getElementById('serie').value;
+    const motor = document.getElementById('motor').value;
+    const chasis = document.getElementById('chasis').value;
+    const propietario = document.getElementById('propietario').value;
+    const fecha_soat = document.getElementById('fecha_soat').value;
+
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${placa}</td><td>${marca}</td><td>${modelo}</td><td>${serie}</td><td>${motor}</td><td>${chasis}</td><td>${propietario}</td><td>${fecha_soat}</td>`;
+    tablaVehiculos.appendChild(row);
+
+    formVehiculo.reset();
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

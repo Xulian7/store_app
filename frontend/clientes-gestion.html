@@ -2,18 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>App - Panel de Inicio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestión de Clientes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     :root{
-      --bg:#f1f3f5; --card:#fff; --muted:#6c757d; --accent:#0d6efd;
+      --bg:#f8f9fa; --card:#fff; --muted:#6c757d; --accent:#0d6efd;
       --sidebar-bg:#ffffff; --sidebar-width:260px; --sidebar-collapsed-width:72px;
-    }
-    [data-theme="dark"]{
-      --bg:#071025; --card:#091426; --muted:#9aa7bd; --accent:#4dabf7;
-      --sidebar-bg:#071526;
     }
     body{ background:var(--bg); color:var(--muted); height:100vh; }
     .app-shell{ display:flex; height:100vh; overflow:hidden; }
@@ -38,11 +34,8 @@
     .collapse-btn-container{ padding:12px; text-align:center; }
     .breadcrumb{ --bs-breadcrumb-divider: '>'; }
     .view-card{ background:var(--card); border-radius:12px; padding:18px; color:inherit; box-shadow:0 4px 20px rgba(2,6,23,.06); }
-    .sidebar.collapsed{ box-shadow: inset 4px 0 0 rgba(13,110,253,.06); }
-    @media (max-width:760px){
-      .sidebar{ position:fixed; z-index:1050; transform:translateX(-100%); }
-      .sidebar.open{ transform:translateX(0); }
-    }
+    .card { border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.08); }
+    .table thead { background:#0d6efd; color:#fff; }
   </style>
 </head>
 <body data-theme="light">
@@ -51,78 +44,23 @@
     <aside id="sidebar" class="sidebar">
       <div class="brand">
         <div class="brand-logo badge bg-primary text-white rounded-pill" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
-          <i class="bi bi-bootstrap"></i>
+          <i class="bi bi-people-fill"></i>
         </div>
         <div class="brand-text">
           <div>Moto Shop</div>
-          <small class="text-muted"></small>
         </div>
       </div>
       <div class="nav-section">
-
-        <!-- Parent: Clientes -->
         <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="clientes">
+          <a class="nav-link parent-link active-parent" data-parent="clientes">
             <span class="icon"><i class="bi bi-people-fill"></i></span>
             <span class="text-label">Clientes</span>
           </a>
-          <div class="sublist" data-parent="clientes">
-            <a href="static/clientes-gestion.html" class="nav-link child-link">Gestión</a>
+          <div class="sublist" data-parent="clientes" style="display:block;">
+            <a href="clientes-gestion.html" class="nav-link child-link active">Gestión</a>
             <a href="clientes-reportes.html" class="nav-link child-link">Reportes</a>
           </div>
         </div>
-
-        <!-- Parent: Vehiculos -->
-        <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="Vehiculos">
-            <span class="icon"><i class="bi bi-people-fill"></i></span>
-            <span class="text-label">Vehiculos</span>
-          </a>
-          <div class="sublist" data-parent="Vehiculos">
-            <a href="static/vehiculos-gestion.html" class="nav-link child-link">Gestión</a>
-            <a href="vehiculos-reportes.html" class="nav-link child-link">Reportes</a>
-          </div>
-        </div>
-
-
-        <!-- Parent: Almacén -->
-        <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="almacen">
-            <span class="icon"><i class="bi bi-box-seam"></i></span>
-            <span class="text-label">Almacén</span>
-          </a>
-          <div class="sublist" data-parent="almacen">
-            <a href="static/almacen-gestion.html" class="nav-link child-link">Gestión</a>
-            <a href="almacen-ventas.html" class="nav-link child-link">Ventas</a>
-            <a href="almacen-reportes.html" class="nav-link child-link">Reportes</a>
-          </div>
-        </div>
-
-        <!-- Parent: Taller -->
-        <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="taller">
-            <span class="icon"><i class="bi bi-tools"></i></span>
-            <span class="text-label">Taller</span>
-          </a>
-          <div class="sublist" data-parent="taller">
-            <a href="taller-servicios.html" class="nav-link child-link">Servicios</a>
-            <a href="taller-reportes.html" class="nav-link child-link">Reportes</a>
-          </div>
-        </div>
-
-        <!-- Parent: Arrendamientos -->
-        <div class="nav-item">
-          <a class="nav-link parent-link" data-parent="arrendamientos">
-            <span class="icon"><i class="bi bi-building"></i></span>
-            <span class="text-label">Arrendamientos</span>
-          </a>
-          <div class="sublist" data-parent="arrendamientos">
-            <a href="arrendamientos-cobros.html" class="nav-link child-link">Lista de Cobros</a>
-            <a href="arrendamientos-contratos.html" class="nav-link child-link">Contratos</a>
-            <a href="arrendamientos-reportes.html" class="nav-link child-link">Reportes</a>
-          </div>
-        </div>
-
       </div>
       <div class="collapse-btn-container">
         <button id="collapseSidebarBtn" class="btn btn-sm btn-outline-secondary" title="Colapsar sidebar"><i class="bi bi-arrow-left-right"></i></button>
@@ -132,30 +70,80 @@
     <!-- Main -->
     <main class="content">
       <div class="topbar">
-        <h4>Inicio</h4>
+        <h4>Gestión de Clientes</h4>
       </div>
-      <div class="view-card mt-3">
-        <h3>Bienvenido al panel de inicio</h3>
-        <p class="text-muted">Selecciona una sección del sidebar para navegar a su página correspondiente.</p>
+      <div class="container py-4">
+
+        <h2 class="mb-4"><i class="bi bi-people-fill"></i> Gestión de Clientes</h2>
+
+        <div class="row g-4">
+          <!-- Crear/Modificar cliente -->
+          <div class="col-md-6">
+            <div class="card p-3">
+              <h5><i class="bi bi-plus-circle"></i> Crear / Modificar Cliente</h5>
+              <form id="formCliente" class="needs-validation" novalidate>
+                <div class="mb-3">
+                  <label class="form-label">Cédula</label>
+                  <input type="text" class="form-control" id="cedula" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="nombre" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Dirección</label>
+                  <input type="text" class="form-control" id="direccion" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Teléfono</label>
+                  <input type="text" class="form-control" id="telefono" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nacionalidad</label>
+                  <input type="text" class="form-control" id="nacionalidad" required>
+                </div>
+                <button class="btn btn-primary w-100" type="submit">Guardar</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Ver clientes -->
+          <div class="col-md-6">
+            <div class="card p-3">
+              <h5><i class="bi bi-eye-fill"></i> Clientes Registrados</h5>
+              <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th>Cédula</th>
+                      <th>Nombre</th>
+                      <th>Dirección</th>
+                      <th>Teléfono</th>
+                      <th>Nacionalidad</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaClientes">
+                    <!-- dinámico -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </main>
   </div>
 
 <script>
-  const body = document.body;
   const sidebar = document.getElementById('sidebar');
   const collapseBtn = document.getElementById('collapseSidebarBtn');
 
-  // restore theme & collapse
-  body.setAttribute('data-theme', localStorage.getItem('mf_theme') || 'light');
-  if(localStorage.getItem('mf_sidebar_collapsed')==='true') sidebar.classList.add('collapsed');
-
   collapseBtn.addEventListener('click', ()=>{
-    const collapsed = sidebar.classList.toggle('collapsed');
-    localStorage.setItem('mf_sidebar_collapsed', collapsed);
+    sidebar.classList.toggle('collapsed');
   });
 
-  // toggle sublist tipo acordeón
+  // Sublist toggle
   document.querySelectorAll('.parent-link').forEach(parent=>{
     parent.addEventListener('click', e=>{
       e.preventDefault();
@@ -169,6 +157,27 @@
         parent.classList.add('active-parent');
       }
     });
+  });
+
+  // Validación simple del formulario
+  const formCliente = document.getElementById('formCliente');
+  const tablaClientes = document.getElementById('tablaClientes');
+  formCliente.addEventListener('submit', e=>{
+    e.preventDefault();
+    if (!formCliente.checkValidity()) { formCliente.classList.add('was-validated'); return; }
+
+    const cedula = document.getElementById('cedula').value;
+    const nombre = document.getElementById('nombre').value;
+    const direccion = document.getElementById('direccion').value;
+    const telefono = document.getElementById('telefono').value;
+    const nacionalidad = document.getElementById('nacionalidad').value;
+
+    // Insertar en la tabla
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${cedula}</td><td>${nombre}</td><td>${direccion}</td><td>${telefono}</td><td>${nacionalidad}</td>`;
+    tablaClientes.appendChild(row);
+
+    formCliente.reset();
   });
 </script>
 

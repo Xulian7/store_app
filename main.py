@@ -3,8 +3,9 @@ from pydantic import BaseModel
 import asyncpg
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
+from fastapi.responses import FileResponse
 from fastapi.responses import HTMLResponse
+from pathlib import Path
 import os
 import uvicorn
 import logging
@@ -45,9 +46,30 @@ async def get_connection():
 # -------------------------------
 # STATIC & VIEWS
 # -------------------------------
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
+# Carpeta de assets (CSS, JS, imágenes, etc.)
 app.mount("/assets", StaticFiles(directory="frontend/assets"), name="assets")
-app.mount("/views", StaticFiles(directory="frontend/views"), name="views")
+# Carpeta de frontend
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+# -------------------------------
+# ENDPOINTS VISTAS
+# -------------------------------
+@app.get("/")
+async def index():
+    return FileResponse("frontend/index.html")
+
+@app.get("/almacen-gestion")
+async def almacen_gestion():
+    return FileResponse("frontend/almacen-gestion.html")
+
+@app.get("/clientes-gestion")
+async def clientes_gestion():
+    return FileResponse("frontend/clientes-gestion.html")
+
+@app.get("/vehiculos-gestion")
+async def vehiculos_gestion():
+    return FileResponse("frontend/vehiculos-gestion.html")
+
 
 def serve_html(filename: str):
     path = Path("frontend") / filename
@@ -97,21 +119,12 @@ async def login(data: LoginData):
 # -------------------------------
 # ENDPOINT PRODUCTOS
 # -------------------------------
-from fastapi import Request
-
 @app.post("/productos")
-async def crear_producto(request: Request):
-    raw_body = await request.body()
-    print("[RAW] Body recibido:", raw_body.decode("utf-8"))
-
-    # 👇 si quieres seguir usando tu modelo Producto
-    data = await request.json()
-    print("[JSON] Parseado:", data)
-
-    prod = Producto(**data)  # validar manualmente contra tu modelo
-
+async def crear_producto(prod: Producto):
+    print("[BACK] Datos recibidos:", prod.dict())
     conn = await get_connection()
     try:
+        # 👇 log de las tablas disponibles
         tablas = await conn.fetch(
             "SELECT table_name FROM information_schema.tables WHERE table_schema='public'"
         )
@@ -136,10 +149,10 @@ async def crear_producto(request: Request):
         )
         
         print(f"[OK] Producto insertado -> ID {new_id}, REF {prod.referencia}")
+
         return {"id": new_id, "msg": "Producto creado correctamente"}
     finally:
         await conn.close()
-
 
 
 
