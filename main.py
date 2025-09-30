@@ -30,13 +30,14 @@ class Producto(BaseModel):
     nombre: str
     referencia: str
     precio_compra: float
-    precio_venta: float
 
 # -------------------------------
 # CONEXIÓN A DB
 # -------------------------------
-DATABASE_URL = 'postgresql://postgres:kEHmlYsNdNfQAHngoJfGyYDXJXSJiWaw@shortline.proxy.rlwy.net:40143/railway'
-#DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql://postgres:kEHmlYsNdNfQAHngoJfGyYDXJXSJiWaw@shortline.proxy.rlwy.net:40143/railway"  # fallback local
+)
 
 async def get_connection():
     return await asyncpg.connect(DATABASE_URL)
@@ -96,25 +97,52 @@ async def login(data: LoginData):
 # -------------------------------
 # ENDPOINT PRODUCTOS
 # -------------------------------
+from fastapi import Request
+
 @app.post("/productos")
-async def crear_producto(prod: Producto):
+async def crear_producto(request: Request):
+    raw_body = await request.body()
+    print("[RAW] Body recibido:", raw_body.decode("utf-8"))
+
+    # 👇 si quieres seguir usando tu modelo Producto
+    data = await request.json()
+    print("[JSON] Parseado:", data)
+
+    prod = Producto(**data)  # validar manualmente contra tu modelo
+
     conn = await get_connection()
     try:
-        # Verificar referencia existente
-        existe = await conn.fetchrow("SELECT id FROM productos WHERE referencia=$1", prod.referencia)
-        if existe:
-            raise HTTPException(status_code=400, detail=f"La referencia '{prod.referencia}' ya existe")
+        tablas = await conn.fetch(
+            "SELECT table_name FROM information_schema.tables WHERE table_schema='public'"
+        )
+        print("[DB] Tablas en la base de datos:", [t["table_name"] for t in tablas])
 
-        # Insertar producto
+        existe = await conn.fetchrow(
+            "SELECT id FROM productos WHERE referencia=$1", prod.referencia
+        )
+        if existe:
+            raise HTTPException(
+                status_code=400,
+                detail=f"La referencia '{prod.referencia}' ya existe"
+            )
+
         query = """
-            INSERT INTO productos (nombre, referencia, precio_compra, precio_venta)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO productos (nombre, referencia, precio_compra)
+            VALUES ($1, $2, $3)
             RETURNING id
         """
-        new_id = await conn.fetchval(query, prod.nombre, prod.referencia, prod.precio_compra, prod.precio_venta)
+        new_id = await conn.fetchval(
+            query, prod.nombre, prod.referencia, prod.precio_compra
+        )
+        
+        print(f"[OK] Producto insertado -> ID {new_id}, REF {prod.referencia}")
         return {"id": new_id, "msg": "Producto creado correctamente"}
     finally:
         await conn.close()
+
+
+
+
 
 # -------------------------------
 # RAILWAY: Puerto dinámico

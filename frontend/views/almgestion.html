@@ -34,10 +34,6 @@
               <label class="form-label">Precio Compra</label>
               <input type="number" class="form-control" id="precioCompra" required>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Precio Venta</label>
-              <input type="number" class="form-control" id="precioVenta" required>
-            </div>
             <button class="btn btn-primary w-100" type="submit">Guardar</button>
           </form>
         </div>
@@ -102,39 +98,45 @@
 
 <!-- Funcion crear productos -->
 <script>
-document.getElementById("formProducto").addEventListener("submit", async function (e) {
-  e.preventDefault();
+(function() {
+  const BASE_URL = window.location.hostname.includes("localhost")
+    ? "http://127.0.0.1:8000"
+    : "https://storeapp-production-9a82.up.railway.app";
 
-  const data = {
-    nombre: document.getElementById("nombre").value,
-    referencia: document.getElementById("referencia").value,
-    precio_compra: parseFloat(document.getElementById("precioCompra").value),
-    precio_venta: parseFloat(document.getElementById("precioVenta").value),
-  };
+  const form = document.getElementById("formProducto");
 
-  try {
-    const res = await fetch("/productos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-    if (!res.ok) {
-      const error = await res.json();
-      alert("Error: " + error.detail);
-      return;
+    const data = {
+      nombre: document.getElementById("nombre").value,
+      referencia: document.getElementById("referencia").value,
+      precio_compra: parseFloat(document.getElementById("precioCompra").value),
+    };
+
+    try {
+      const res = await fetch(`${BASE_URL}/productos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        alert("Error: " + error.detail);
+        return;
+      }
+
+      const result = await res.json();
+      alert("Producto guardado: " + result.msg);
+
+      form.reset(); // usar la constante en vez de buscar otra vez el form
+    } catch (err) {
+      console.error("Error en fetch:", err);
+      alert("Error al conectar con el servidor");
     }
-
-    const result = await res.json();
-    alert("Producto guardado: " + result.message);
-
-    // limpia el form
-    document.getElementById("formProducto").reset();
-  } catch (err) {
-    console.error("Error en fetch:", err);
-    alert("Error al conectar con el servidor");
-  }
-});
+  });
+})();
 </script>
 
 
