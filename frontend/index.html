@@ -95,7 +95,7 @@
 
           const data = await res.json();
           localStorage.setItem('token', data.access_token);
-          window.location.href = `${BASE_URL}/app.html`;
+          window.location.href = `${BASE_URL}/static/app.html`;
       } catch (err) {
           errorMsg.textContent = err.message;
       }
